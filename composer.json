@@ -1,0 +1,29 @@
+{
+    "name": "maexware/admindashboard",
+    "description": "This is a alternative admin dashboard for the OXID eShop Admin.",
+    "type": "oxideshop-module",
+    "keywords": ["oxid", "modules", "eShop","dashboard"],
+    "homepage": "https://www.maexware-solutions.de",
+    "license": [
+        "GPL-3.0-only",
+        "proprietary"
+    ],
+    "extra": {
+        "oxideshop": {
+            "blacklist-filter": [
+                "documentation/**/*.*",
+                "composer.json",
+                "README.md"
+            ],
+            "target-directory": "mx/admindashboard"
+        }
+    },
+    "require": {
+        "php": ">=5.6",
+    },
+    "autoload": {
+        "psr-4": {
+            "maexware\\AdminDashboard\\": "../../../source/modules/mx/admindashboard"
+        }
+    }
+}
