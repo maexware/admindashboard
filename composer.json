@@ -23,7 +23,7 @@
     },
     "autoload": {
         "psr-4": {
-            "maexware\\AdminDashboard\\": "../../../source/modules/mx/admindashboard"
+            "maexware\\AdminDashboard\\": "./source/modules/mx/admindashboard"
         }
     }
 }
