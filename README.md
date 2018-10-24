@@ -21,5 +21,9 @@ after that perform an
 
 In order to install the module via composer run the following commands in commandline in your shop base directory (where the shop's composer.json file is located).
 
-`composer config repositories.maexware/admindashboard vcs https://github.com/maexware/admindashboard composer require mx/admindashboard:dev-master`
+
+`composer config repositories.maexware/admindashboard vcs https://github.com/maexware/admindashboard `
+
+`composer require mx/admindashboard:dev-master`
+
 
