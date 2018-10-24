@@ -24,6 +24,6 @@ In order to install the module via composer run the following commands in comman
 
 `composer config repositories.maexware/admindashboard vcs https://github.com/maexware/admindashboard `
 
-`composer require mx/admindashboard:dev-master`
+`composer require maexware/admindashboard:dev-master`
 
 
