@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with OXID eSales PayPal module.  If not, see <http://www.gnu.org/licenses/>.
+ * along with maexware solutions AdminDashboard module.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      https://www.maexware-solutions.de
  * @copyright (C) maexware solutions GmbH 2018
