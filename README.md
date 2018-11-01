@@ -5,6 +5,8 @@ Show information dashboard on admin index
 
 ### Manual installation / configuration
 
+Download the SourceCode from Github as zip and extract the module to /source/modules/mx/admindashboard
+
 Open composer.json and find "autoload" -> "prs-4" and add line
 
     "autoload": {
