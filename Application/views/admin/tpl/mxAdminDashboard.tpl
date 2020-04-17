@@ -454,7 +454,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <img src="[{$oViewConf->getBaseDir()}]/modules/mx/admindashboard/maexware.png" hspace="20" vspace="10">
-                    [{oxmultilang ident="MXINFO"}]
+                    [{oxmultilang ident="MXINFO_DASHBOARD"}]
                 </div>
             </div>
         </div>

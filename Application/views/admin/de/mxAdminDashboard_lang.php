@@ -40,7 +40,7 @@ $aLang = array(
     'MXARTICLEVARIANTS'                 => 'Varianten',
     'MXARTICLEACTIVE'                   => 'Nur aktive',
 
-    'MXINFO'                           => 'Das OXID Admin Panel wird von maexware mit freundlichen Grüßen bereitgestellt. Bei Fragen, Featurewünschen und anderen Themen rund um OXID können Sie uns gerne kontaktieren.',
+    'MXINFO_DASHBOARD'                  => 'Das OXID Admin Panel wird von maexware mit freundlichen Grüßen bereitgestellt. Bei Fragen, Featurewünschen und anderen Themen rund um OXID können Sie uns gerne kontaktieren.',
 
     /* SETTINGS */
     'SHOP_MODULE_GROUP_mxAdminDashboard'                => 'Dashboard Anzeigeeinstellungen',
