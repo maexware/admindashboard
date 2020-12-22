@@ -37,7 +37,7 @@ $aModule = [
         'de' => 'Anzeige von Shopstatistiken anstatt der standard OXID eShop Admin Startseite',
     ],
     'thumbnail'   => 'maexware.png',
-    'version'     => '1.0',
+    'version'     => '1.5',
     'author'      => 'maexware solutions GmbH',
     'url'         => 'https://www.maexware-solutions.de',
     'email'       => 'info@maexware-solutions.de',
@@ -127,6 +127,24 @@ $aModule = [
         [
             'group' => 'mxAdminDashboard',
             'name'  => 'mxAdminDashboard_articleTopAll',
+            'type'  => 'bool',
+            'value' => '1'
+        ],
+        [
+            'group' => 'mxAdminDashboard',
+            'name'  => 'mxAdminDashboard_bestBuyer',
+            'type'  => 'bool',
+            'value' => '1'
+        ],
+        [
+            'group' => 'mxAdminDashboard',
+            'name'  => 'mxAdminDashboard_nonseller',
+            'type'  => 'bool',
+            'value' => '1'
+        ],
+        [
+            'group' => 'mxAdminDashboard',
+            'name'  => 'mxAdminDashboard_lowStockArticle',
             'type'  => 'bool',
             'value' => '1'
         ],

@@ -74,6 +74,7 @@ $(function mwAdminDashboard() {
         });
 
         $('#orderoverviewType .btn').click(function() {
+            $('.loader').show();
             actOption = $(this).attr('data-option');
             $('#orderoverviewType .btn').removeClass('active');
             $('#orderChart #orderChartOption').val(actOption);
@@ -82,46 +83,46 @@ $(function mwAdminDashboard() {
         });
 
         $('#orderoverviewNavigation .btn').click(function(e) {
+            $('.loader').show();
             e.preventDefault();
             actOption       = $('#orderChartOption').val();
             actOptionYear   = $('#mwHorizonOrders_optionYear').val();
+            actOptionMonth  = $('#mwHorizonOrders_optionMonth').val();
             goto            = $(this).attr('data-option');
 
             if (actOption == 'm') {
-                actOptionVal = $('#mwHorizonOrders_optionTitle').val();
-                sAdditionalParams = '&actMonth='+actOptionVal;
+                sAdditionalParams = '&actMonth='+actOptionMonth+'&actYear='+actOptionYear;
             } else if (actOption == 'y') {
-                actOptionVal = $('#mwHorizonOrders_optionTitle').val();
-                sAdditionalParams = '&actYear='+actOptionVal;
+                actOptionVal = $('#mwHorizonOrders_optionMonth').val();
+                sAdditionalParams = '&actYear='+actOptionYear;
             } else {
                 sAdditionalParams = '';
             }
-
             $.ajax({
                 url: 'index.php',
-                data: $('#orderChart').serialize()+'&nav='+goto+sAdditionalParams+'&year='+actOptionYear,
+                data: $('#orderChart').serialize()+'&nav='+goto+sAdditionalParams,
                 processData: false,
                 type: 'POST',
                 success: function ( data ) {
                     $('#orderoverviweData').html(data);
                     updateOrderChart();
+                    $('.loader').hide();
                 }
             });
+
         });
 
         $( '#orderChart' ).submit(function ( e ) {
             actOption       = $('#orderChartOption').val();
             actOptionYear   = $('#mwHorizonOrders_optionYear').val();
+            actOptionMonth  = $('#mwHorizonOrders_optionMonth').val();
             if (actOption == 'm') {
-                actOptionVal = $('#mwHorizonOrders_optionTitle').val();
-                sAdditionalParams = '&actMonth='+actOptionVal;
+                sAdditionalParams = '&actMonth='+actOptionMonth+'&actYear='+actOptionYear;
             } else if (actOption == 'y') {
-                actOptionVal = $('#mwHorizonOrders_optionTitle').val();
-                sAdditionalParams = '&actYear='+actOptionVal;
+                sAdditionalParams = '&actYear='+actOptionYear;
             } else {
                 sAdditionalParams = '';
             }
-
             sendAjaxOrderRequest(sAdditionalParams,actOptionYear);
 
             e.preventDefault();
@@ -130,12 +131,12 @@ $(function mwAdminDashboard() {
         //LOAD ORDER CHART
         actOption       = $('#orderChartOption').val();
         actOptionYear   = $('#mwHorizonOrders_optionYear').val();
+        actOptionMonth  = $('#mwHorizonOrders_optionMonth').val();
+
         if (actOption == 'm') {
-            actOptionVal = $('#mwHorizonOrders_optionTitle').val();
-            sAdditionalParams = '&actMonth='+actOptionVal;
+            sAdditionalParams = '&actMonth='+actOptionMonth;
         } else if (actOption == 'y') {
-            actOptionVal = $('#mwHorizonOrders_optionTitle').val();
-            sAdditionalParams = '&actYear='+actOptionVal;
+            sAdditionalParams = '&actYear='+actOptionYear;
         } else {
             sAdditionalParams = '';
         }
@@ -151,6 +152,7 @@ $(function mwAdminDashboard() {
             success: function ( data ) {
                 $('#orderoverviweData').html(data);
                 updateOrderChart();
+                $('.loader').hide();
             }
         });
     }
@@ -160,7 +162,7 @@ $(function mwAdminDashboard() {
         totalPoints   = parseInt($('#mwHorizonOrders').val());
         maxValues     = parseInt($('#mwHorizonOrders_maxCount').val());
         option        = $('#mwHorizonOrders_option').val();
-        optionTitle   = $('#mwHorizonOrders_optionTitle').val();
+        optionTitle   = $('#mwHorizonOrders_optionMonth').val();
         optionYear    = $('#mwHorizonOrders_optionYear').val();
 
         if (option == 'm' || option == 'cm') {
@@ -172,7 +174,9 @@ $(function mwAdminDashboard() {
         } else if(option == 'y' || option == 'cy') {
             sChartTitle = optionYear;
         }
+
         $('#orderChartPeriod').html(sChartTitle);
+
         var orderoverview_plot = $.plot("#orderoverview", [getChartData()], {
             grid: {
                 borderColor: "#f3f3f3",

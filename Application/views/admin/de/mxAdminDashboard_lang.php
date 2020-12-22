@@ -17,6 +17,8 @@ $aLang = array(
     'MXARTICLESTOPONLYACTIVE'           => 'Artikel verkauft TOP 10 - nur aktiv',
     'MXARTICLESTOPALL'                  => 'Artikel verkauft TOP 10 - alle',
     'MXSELLCOUNT'                       => 'Anzahl Verkäufe',
+    'MXSELLSTOCK'                       => 'Lager',
+    'MXSELLSTOCKFLAGOTHER'              => 'Fremdlager',
     'MXARTICLE'                         => 'Artikel',
     'MXORDERVALUE'                      => 'Bestellwert',
     'MXORDERVALUES'                     => 'Bestellwerte',
@@ -39,6 +41,17 @@ $aLang = array(
     'MXARTICLEPARENTS'                  => 'Vaterartikel',
     'MXARTICLEVARIANTS'                 => 'Varianten',
     'MXARTICLEACTIVE'                   => 'Nur aktive',
+    'MXARTICLELOWSTOCK'                 => 'Lager Warnung',
+    'MXARTICLESLADENHÜTER'              => 'Ladenhüter',
+    'MXBESTBUYER'                       => 'Top Käufer',
+    'MXBESTBUYER_COUNT'                 => 'Käufe',
+    'MXBESTBUYER_CUSTOMER'              => 'Kunde',
+    'MXBESTBUYER_LNAME'                 => 'Nachname',
+    'MXBESTBUYER_FNAME'                 => 'Vorname',
+    'MXBESTBUYER_MAIL'                  => 'Mail',
+    'MXBESTBUYER_CUSTNR'                => 'Kundennummer',
+    'MXBESTBUYER_BRUT'                  => 'Brutto',
+    'MXBESTBUYER_NET'                   => 'Netto',
 
     'MXINFO_DASHBOARD'                  => 'Das OXID Admin Panel wird von maexware mit freundlichen Grüßen bereitgestellt. Bei Fragen, Featurewünschen und anderen Themen rund um OXID können Sie uns gerne kontaktieren.',
 
@@ -56,6 +69,9 @@ $aLang = array(
     'SHOP_MODULE_mxAdminDashboard_articleInfos'         => 'Artikel Informationen',
     'SHOP_MODULE_mxAdminDashboard_articleTopActive'     => 'Artikel Topseller Aktiv',
     'SHOP_MODULE_mxAdminDashboard_articleTopAll'        => 'Artikel Topseller Alle',
+    'SHOP_MODULE_mxAdminDashboard_bestBuyer'            => 'Top Käufer',
+    'SHOP_MODULE_mxAdminDashboard_nonseller'            => 'Ladenhüter',
+    'SHOP_MODULE_mxAdminDashboard_lowStockArticle'      => 'Niedriges Lager',
 );
 
 

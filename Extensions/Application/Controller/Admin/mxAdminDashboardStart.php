@@ -29,7 +29,6 @@ class mxAdminDashboardStart extends mxAdminDashboardStart_parent
     protected $_sThisTemplate = "mxStart.tpl";
 
     public function render(){
-        $this->_aViewData['dafusolo'] = 'test';
         return parent::render();
     }
 }

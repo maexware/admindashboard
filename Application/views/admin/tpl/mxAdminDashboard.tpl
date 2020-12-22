@@ -40,6 +40,19 @@
         cursor: pointer;
     }
 
+    .panel-body {
+        position: relative;
+    }
+    .panel-body .loader {
+        position: absolute;
+            top: 0;
+            left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.6);
+        z-index: 99;
+    }
+
 </style>
 
 <div id="mwToggleSidebar"">><</div>
@@ -102,6 +115,27 @@
                     <h3 class="panel-title">[{oxmultilang ident="MXDASHBOARDORDERDATA"}]</h3>
                 </div>
                 <div class="panel-body">
+                    <div class="loader">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; display: block;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                            <rect x="19" y="19" width="20" height="20" fill="#93dbe9">
+                                <animate attributeName="fill" values="#689cc5;#93dbe9;#93dbe9" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0s" calcMode="discrete"></animate>
+                            </rect><rect x="40" y="19" width="20" height="20" fill="#93dbe9">
+                                <animate attributeName="fill" values="#689cc5;#93dbe9;#93dbe9" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.125s" calcMode="discrete"></animate>
+                            </rect><rect x="61" y="19" width="20" height="20" fill="#93dbe9">
+                                <animate attributeName="fill" values="#689cc5;#93dbe9;#93dbe9" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.25s" calcMode="discrete"></animate>
+                            </rect><rect x="19" y="40" width="20" height="20" fill="#93dbe9">
+                                <animate attributeName="fill" values="#689cc5;#93dbe9;#93dbe9" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.875s" calcMode="discrete"></animate>
+                            </rect><rect x="61" y="40" width="20" height="20" fill="#93dbe9">
+                                <animate attributeName="fill" values="#689cc5;#93dbe9;#93dbe9" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.375s" calcMode="discrete"></animate>
+                            </rect><rect x="19" y="61" width="20" height="20" fill="#93dbe9">
+                                <animate attributeName="fill" values="#689cc5;#93dbe9;#93dbe9" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.75s" calcMode="discrete"></animate>
+                            </rect><rect x="40" y="61" width="20" height="20" fill="#93dbe9">
+                                <animate attributeName="fill" values="#689cc5;#93dbe9;#93dbe9" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.625s" calcMode="discrete"></animate>
+                            </rect><rect x="61" y="61" width="20" height="20" fill="#93dbe9">
+                                <animate attributeName="fill" values="#689cc5;#93dbe9;#93dbe9" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.5s" calcMode="discrete"></animate>
+                            </rect>
+                        </svg>
+                    </div>
                     <form name="orderChart" id="orderChart" action="[{ $oViewConf->getSelfLink() }]" method="post">
                         [{ $oViewConf->getHiddenSid() }]
                         <input type="hidden" name="cl" value="mxAdminDashboard">
@@ -438,6 +472,109 @@
                                 <th scope="row">[{$smarty.foreach.articleSelled.iteration}]</th>
                                 <td>[{$article.oxtitle}]</td>
                                 <td>[{$article.oxamount}]</td>
+                            </tr>
+                            [{/foreach}]
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        [{/if}]
+    </div>
+
+    <div class="row">
+
+
+        [{if $aBestBuyers != 'DONTSHOW'}]
+        <div class="col-sm-12 col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">[{oxmultilang ident="MXBESTBUYER"}]</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">[{oxmultilang ident="MXBESTBUYER_COUNT"}]</th>
+                            <th scope="col">[{oxmultilang ident="MXBESTBUYER_CUSTOMER"}]</th>
+                            <th scope="col">[{oxmultilang ident="MXBESTBUYER_NET"}]</th>
+                            <th scope="col">[{oxmultilang ident="MXBESTBUYER_BRUT"}]</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        [{foreach from=$aBestBuyers item=buyerUser name=bestbuyerlist}]
+                            <tr>
+                                <th scope="row">[{$smarty.foreach.bestbuyerlist.iteration}]</th>
+                                <td>[{$buyerUser.counter}]</td>
+                                <td>
+                                    [{$buyerUser.oxcustnr}] - [{$buyerUser.oxusername}]<br>
+                                    [{$buyerUser.oxfname}] [{$buyerUser.oxusername}]
+                                </td>
+                                <td>[{$buyerUser.netsum}]</td>
+                                <td>[{$buyerUser.brutsum}]</td>
+                            </tr>
+                        [{/foreach}]
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        [{/if}]
+        [{if $aNonSellers != 'DONTSHOW'}]
+        <div class="col-sm-12 col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">[{oxmultilang ident="MXARTICLESLADENHÜTER"}]</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">[{oxmultilang ident="MXARTICLE"}]</th>
+                            <th scope="col">[{oxmultilang ident="MXSELLCOUNT"}]</th>
+                            <th scope="col">[{oxmultilang ident="MXSELLSTOCK"}]</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        [{foreach from=$aNonSellers item=article name=articleSelled}]
+                            <tr>
+                                <th scope="row">[{$smarty.foreach.articleSelled.iteration}]</th>
+                                <td>[{$article.oxartnum}] - [{$article.oxtitle}]</td>
+                                <td>[{$article.oxsoldamount}]</td>
+                                <td>[{if $article.oxstockflag != 4}][{$article.oxstock}][{else}][{oxmultilang ident="MXSELLSTOCKFLAGOTHER"}][{/if}]</td>
+                            </tr>
+                            [{/foreach}]
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        [{/if}]
+        [{if $aLowStockArticles != 'DONTSHOW'}]
+        <div class="col-sm-12 col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">[{oxmultilang ident="MXARTICLELOWSTOCK"}]</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">[{oxmultilang ident="MXARTICLE"}]</th>
+                            <th scope="col">[{oxmultilang ident="MXSELLCOUNT"}]</th>
+                            <th scope="col">[{oxmultilang ident="MXSELLSTOCK"}]</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        [{foreach from=$aLowStockArticles item=article name=articleSelled}]
+                            <tr>
+                                <th scope="row">[{$smarty.foreach.articleSelled.iteration}]</th>
+                                <td>[{$article.oxtitle}]</td>
+                                <td>[{$article.oxamount}]</td>
+                                <td>[{$article.oxstock}]</td>
                             </tr>
                             [{/foreach}]
                         </tbody>

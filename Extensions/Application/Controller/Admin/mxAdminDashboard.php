@@ -127,6 +127,24 @@ class mxAdminDashboard extends mxAdminDashboard_parent{
             $this->_aViewData['aArticleOnlyDatas'] = 'DONTSHOW';
         }
 
+        if ($myconfig->getConfigParam("mxAdminDashboard_bestBuyer") == '1') {
+            $this->_aViewData['aBestBuyers'] = $this->getBestBuyers();
+        } else {
+            $this->_aViewData['aBestBuyers'] = 'DONTSHOW';
+        }
+
+        if ($myconfig->getConfigParam("mxAdminDashboard_nonseller") == '1') {
+            $this->_aViewData['aNonSellers'] = $this->getNonSellers();
+        } else {
+            $this->_aViewData['aNonSellers'] = 'DONTSHOW';
+        }
+
+        if ($myconfig->getConfigParam("mxAdminDashboard_lowStockArticle") == '1') {
+            $this->_aViewData['aLowStockArticles'] = $this->getStockWarnings();
+        } else {
+            $this->_aViewData['aLowStockArticles'] = 'DONTSHOW';
+        }
+
         if (Registry::getConfig()->getRequestParameter("fnc") == 'changeOrderChartView') {
             return 'mxOrderChart.tpl';
         }
@@ -179,7 +197,7 @@ class mxAdminDashboard extends mxAdminDashboard_parent{
                 $aMaxResult = $oDB->getAll($sSql);
                 $aReturn['year'] = $sYear;
                 $aReturn['month'] = $sMonth;
-                $aReturn['horizont'] = 12;
+                $aReturn['horizont'] = 13;
                 $aReturn['maxCount'] = $aMaxResult[0]['maxcount'];
                 $aReturn['optionTitle'] = $sYear;
                 $aReturn['result'] = $aResult;
@@ -226,9 +244,12 @@ class mxAdminDashboard extends mxAdminDashboard_parent{
         $sOption    = Registry::getConfig()->getRequestEscapedParameter("option");
         $sNav       = Registry::getConfig()->getRequestEscapedParameter("nav");
         $sActMonth  = Registry::getConfig()->getRequestEscapedParameter("actMonth");
+        if ($sActMonth == null) {
+            $sActMonth   = date("j");
+        }
         $sActYear   = Registry::getConfig()->getRequestEscapedParameter("actYear");
         if ($sActYear == null) {
-            $sActYear   = Registry::getConfig()->getRequestEscapedParameter("year");
+            $sActYear   = date("Y");
         }
 
         if ($sOption == 'm') {
@@ -509,6 +530,62 @@ class mxAdminDashboard extends mxAdminDashboard_parent{
 
         $aResult = $oDB->getAll($sSQL);
         return $aResult[0];
+    }
+
+    /**
+     * @return array
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseErrorException
+     */
+    public function getBestBuyers() {
+        $oDB = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
+        $sSQL = "
+            SELECT COUNT(oo.oxuserid) as counter,oxuser.oxcustnr,oxuser.oxlname,oxuser.oxfname,oxuser.oxusername, sum(oxtotalbrutsum) as brutsum, sum(oxtotalnetsum) as netsum
+            FROM oxorder oo
+            LEFT JOIN oxuser
+                ON oxuser.oxid = oo.oxuserid
+            GROUP BY oo.oxuserid
+            ORDER BY counter DESC
+            LIMIT 2
+        ";
+        $aResult = $oDB->getAll($sSQL);
+        return $aResult;
+    }
+
+    /**
+     * @return array
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseErrorException
+     */
+    public function getNonSellers() {
+        $oDB = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
+        $sSQL = "
+            SELECT oxid,oxartnum,oxtitle,oxsoldamount,oxstockflag,oxstock
+            FROM oxarticles
+            WHERE
+            oxactive = 1
+            AND (oxstock > 0 AND oxstockflag != 4) OR (oxstockflag = 4)
+            ORDER BY oxstockflag ASC, oxsoldamount asc
+            LIMIT 10
+        ";
+        $aResult = $oDB->getAll($sSQL);
+        return $aResult;
+    }
+
+    public function getStockWarnings() {
+        $iLowStockCount = Registry::getConfig()->getConfigParam('sStockWarningLimit');
+        $oDB = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
+        $sSQL = "
+            SELECT oxid,oxartnum,oxtitle,oxsoldamount,oxstockflag,oxstock
+            FROM oxarticles
+            WHERE
+            oxactive = 1 AND
+            oxstock <= ".$iLowStockCount." AND oxstockflag != 4
+            ORDER BY oxsoldamount desc
+            LIMIT 10
+        ";
+        $aResult = $oDB->getAll($sSQL);
+        return $aResult;
     }
 
     /*
