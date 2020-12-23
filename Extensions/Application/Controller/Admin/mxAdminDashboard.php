@@ -145,6 +145,25 @@ class mxAdminDashboard extends mxAdminDashboard_parent{
             $this->_aViewData['aLowStockArticles'] = 'DONTSHOW';
         }
 
+        if ($myconfig->getConfigParam("mxAdminDashboard_bestSellingDays") == '1') {
+            $this->_aViewData['aBestSellingDays'] = $this->getBestSellingDays();
+        } else {
+            $this->_aViewData['aBestSellingDays'] = 'DONTSHOW';
+        }
+
+        if ($myconfig->getConfigParam("mxAdminDashboard_bestSellingMonth") == '1') {
+            $this->_aViewData['aBestSellingMonth'] = $this->getBestSellingMonth();
+        } else {
+            $this->_aViewData['aBestSellingMonth'] = 'DONTSHOW';
+        }
+
+        if ($myconfig->getConfigParam("mxAdminDashboard_bestSellingHour") == '1') {
+            $this->_aViewData['aBestSellingHour'] = $this->getBestSellingHour();
+        } else {
+            $this->_aViewData['aBestSellingHour'] = 'DONTSHOW';
+        }
+
+
         if (Registry::getConfig()->getRequestParameter("fnc") == 'changeOrderChartView') {
             return 'mxOrderChart.tpl';
         }
@@ -244,17 +263,18 @@ class mxAdminDashboard extends mxAdminDashboard_parent{
         $sOption    = Registry::getConfig()->getRequestEscapedParameter("option");
         $sNav       = Registry::getConfig()->getRequestEscapedParameter("nav");
         $sActMonth  = Registry::getConfig()->getRequestEscapedParameter("actMonth");
+        $sActYear   = Registry::getConfig()->getRequestEscapedParameter("actYear");
         if ($sActMonth == null) {
             $sActMonth   = date("j");
         }
-        $sActYear   = Registry::getConfig()->getRequestEscapedParameter("actYear");
+
         if ($sActYear == null) {
             $sActYear   = date("Y");
         }
 
         if ($sOption == 'm') {
             if ($sNav == null) {
-                $aResult = $this->getOrderOverview($sOption);
+                $aResult = $this->getOrderOverview($sOption,$sActMonth,$sActYear);
             } elseif ($sNav == 'prev') {
                 $iActMonth = intval($sActMonth);
                 $iActMonth--;
@@ -280,7 +300,7 @@ class mxAdminDashboard extends mxAdminDashboard_parent{
             }
         } elseif ($sOption == 'y') {
             if ($sNav == null) {
-                $aResult = $this->getOrderOverview($sOption);
+                $aResult = $this->getOrderOverview($sOption,$sActMonth,$sActYear);
             } elseif ($sNav == 'prev') {
                 $sActYear = intval($sActYear);
                 $sActYear--;
@@ -583,6 +603,58 @@ class mxAdminDashboard extends mxAdminDashboard_parent{
             oxstock <= ".$iLowStockCount." AND oxstockflag != 4
             ORDER BY oxsoldamount desc
             LIMIT 10
+        ";
+        $aResult = $oDB->getAll($sSQL);
+        return $aResult;
+    }
+
+    /**
+     * @return array
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseErrorException
+     */
+    public function getBestSellingDays() {
+        $oDB = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
+        $sSQL = "
+            SELECT DAYNAME(oxorderdate) as day, COUNT(oxorderdate) as orderscount
+            FROM oxorder
+            GROUP BY day
+            ORDER BY WEEKDAY(oxorderdate)
+        ";
+        $aResult = $oDB->getAll($sSQL);
+        return $aResult;
+    }
+
+    /**
+     * @return array
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseErrorException
+     */
+    public function getBestSellingMonth() {
+        $oDB = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
+        $sSQL = "
+            SELECT MONTHNAME(oxorderdate) as day, COUNT(oxorderdate) as orderscount
+            FROM oxorder
+            GROUP BY day
+            ORDER BY MONTHNAME(oxorderdate)
+        ";
+        $aResult = $oDB->getAll($sSQL);
+        return $aResult;
+    }
+
+    /**
+     * @return array
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseErrorException
+     */
+    public function getBestSellingHour() {
+        $oDB = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
+        $sSQL = "
+            SELECT HOUR(oxorderdate) as hour, COUNT(oxorderdate) as countorders
+            FROM oxorder
+            GROUP BY hour
+            ORDER BY HOUR(oxorderdate)
+            LIMIT 5
         ";
         $aResult = $oDB->getAll($sSQL);
         return $aResult;

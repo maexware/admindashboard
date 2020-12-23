@@ -185,7 +185,15 @@ $(function mwAdminDashboard() {
             },
             series: {
                 shadowSize: 0, // Drawing is faster without shadows
-                color: "#3c8dbc"
+                color: "#3c8dbc",
+                points: {
+                    show: true
+                },
+                lines: {
+                    show: true,
+                    lineWidth: 2
+                }
+
             },
             lines: {
                 fill: true, //Converts the line chart to area chart

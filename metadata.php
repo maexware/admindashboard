@@ -148,5 +148,23 @@ $aModule = [
             'type'  => 'bool',
             'value' => '1'
         ],
+        [
+            'group' => 'mxAdminDashboard',
+            'name'  => 'mxAdminDashboard_bestSellingDays',
+            'type'  => 'bool',
+            'value' => '1'
+        ],
+        [
+            'group' => 'mxAdminDashboard',
+            'name'  => 'mxAdminDashboard_bestSellingMonth',
+            'type'  => 'bool',
+            'value' => '1'
+        ],
+        [
+            'group' => 'mxAdminDashboard',
+            'name'  => 'mxAdminDashboard_bestSellingHour',
+            'type'  => 'bool',
+            'value' => '1'
+        ],
     ],
 ];

@@ -168,6 +168,83 @@
     </div>
     [{/if}]
 
+    <div class="row">
+        [{if $aBestSellingDays != 'DONTSHOW'}]
+            <div class="col-lg-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">[{oxmultilang ident="MXBESTSELLINGDAYS"}]</h3>
+                    </div>
+                    <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    [{foreach from=$aBestSellingDays item=day}]
+                                        <td><h3><b>[{$day.day|truncate:3:""}]</b></b></h3></td>
+                                    [{/foreach}]
+                                </tr>
+                                <tr>
+                                    [{foreach from=$aBestSellingDays item=day}]
+                                        <td><b>[{$day.orderscount}]</b></td>
+                                    [{/foreach}]
+                                </tr>
+                            </table>
+                    </div>
+                </div>
+
+            </div>
+        [{/if}]
+
+        [{if $aBestSellingMonth != 'DONTSHOW'}]
+        <div class="col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">[{oxmultilang ident="MXBESTSELLINGMONTH"}]</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <tr>
+                            [{foreach from=$aBestSellingMonth item=day}]
+                            <td><h4><b>[{$day.day|truncate:3:""}]</b></b></h4></td>
+                            [{/foreach}]
+                        </tr>
+                        <tr>
+                            [{foreach from=$aBestSellingMonth item=day}]
+                            <td><b>[{$day.orderscount}]</b></td>
+                            [{/foreach}]
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        [{/if}]
+
+        [{if $aBestSellingHour != 'DONTSHOW'}]
+        <div class="col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">[{oxmultilang ident="MXBESTSELLINGHOUR"}]</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <tr>
+                            [{foreach from=$aBestSellingHour item=day}]
+                            <td><h3><b>[{$day.hour}] [{oxmultilang ident="MXBESTSELLINGHOUR_LABEL"}]</b></b></h3></td>
+                            [{/foreach}]
+                        </tr>
+                        <tr>
+                            [{foreach from=$aBestSellingHour item=day}]
+                            <td><b>[{$day.countorders}]</b></td>
+                            [{/foreach}]
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        [{/if}]
+    </div>
+
     <!-- Second row -->
     <div class="row">
         [{if $orderPayments != 'DONTSHOW'}]

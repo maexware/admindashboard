@@ -52,6 +52,10 @@ $aLang = array(
     'MXBESTBUYER_CUSTNR'                => 'Kundennummer',
     'MXBESTBUYER_BRUT'                  => 'Brutto',
     'MXBESTBUYER_NET'                   => 'Netto',
+    'MXBESTSELLINGDAYS'                 => 'Verkaufsstarke Tage',
+    'MXBESTSELLINGMONTH'                => 'Verkaufsstarke Monate',
+    'MXBESTSELLINGHOUR'                 => 'Verkaufsstarke Stunden',
+    'MXBESTSELLINGHOUR_LABEL'           => 'Uhr',
 
     'MXINFO_DASHBOARD'                  => 'Das OXID Admin Panel wird von maexware mit freundlichen Grüßen bereitgestellt. Bei Fragen, Featurewünschen und anderen Themen rund um OXID können Sie uns gerne kontaktieren.',
 
@@ -72,6 +76,9 @@ $aLang = array(
     'SHOP_MODULE_mxAdminDashboard_bestBuyer'            => 'Top Käufer',
     'SHOP_MODULE_mxAdminDashboard_nonseller'            => 'Ladenhüter',
     'SHOP_MODULE_mxAdminDashboard_lowStockArticle'      => 'Niedriges Lager',
+    'SHOP_MODULE_mxAdminDashboard_bestSellingDays'      => 'Verkaufsstarke Tage',
+    'SHOP_MODULE_mxAdminDashboard_bestSellingMonth'     => 'Verkaufsstarke Monate',
+    'SHOP_MODULE_mxAdminDashboard_bestSellingHour'      => 'Verkaufsstarke Stunden',
 );
 
 
