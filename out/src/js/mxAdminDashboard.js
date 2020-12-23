@@ -4,10 +4,19 @@
 
 $(function mwAdminDashboard() {
 
-    var data = [],
+    var data        = [],
+        yearData    = [],
         totalPoints = parseInt($('#mwHorizonOrders').val()),
-        maxValues = parseInt($('#mwHorizonOrders_maxCount').val());
+        maxValues   = parseInt($('#mwHorizonOrders_maxCount').val());
 
+
+    function getYearChartData() {
+        $( ".yearDevelopment" ).each( function( index, el ) {
+            yearData.push([$(el).data('year'),$(el).val()]);
+        });
+        console.log(yearData);
+        return yearData;
+    }
 
     function getChartData() {
 
@@ -42,9 +51,40 @@ $(function mwAdminDashboard() {
         }
     });
 
+    if ($('#yearChart').length > 0) {
+        yearTicks   = $('.yearDevelopment').length;
+        yearMax     = $('#yearMaxVal').val();
+        var yearChart_plot = $.plot("#yearDevelopment", [getYearChartData()], {
+            grid: {
+                borderColor: "#f3f3f3",
+                borderWidth: 1,
+                tickColor: "#f3f3f3"
+            },
+            series: {
+                shadowSize: 0, // Drawing is faster without shadows
+                color: "#3c8dbc"
+            },
+            lines: {
+                fill: true, //Converts the line chart to area chart
+                color: "#3c8dbc"
+            },
+            yaxis: {
+                min: 0,
+                max: yearMax,
+                show: true,
+                ticks: yearTicks,
+                tickDecimals: 0
+            },
+            xaxis: {
+                show: true,
+                ticks: yearTicks,
+                tickDecimals: 0
+            }
+        });
+        yearChart_plot.draw();
+    }
 
     if ($('#orderChart').length > 0) {
-
         var orderoverview_plot = $.plot("#orderoverview", [getChartData()], {
             grid: {
                 borderColor: "#f3f3f3",
@@ -447,3 +487,8 @@ $(function mwAdminDashboard() {
     }
 
 });
+
+function updateOrderChartIncome(incomeBrut,incomeNet) {
+    $('#incomeBrut').html(incomeBrut);
+    $('#incomeNet').html(incomeNet);
+}

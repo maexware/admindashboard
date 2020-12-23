@@ -7,3 +7,6 @@
 [{foreach from=$result item=point name="datapoints"}]
     <input type="hidden" id="mwHorizonOrders_point-[{$point.horizontitem}]" value="[{$point.ordercount}]" />
 [{/foreach}]
+<script>
+    updateOrderChartIncome([{$incomeBrut}],[{$incomeNet}]);
+</script>

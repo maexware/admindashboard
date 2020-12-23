@@ -163,6 +163,11 @@ class mxAdminDashboard extends mxAdminDashboard_parent{
             $this->_aViewData['aBestSellingHour'] = 'DONTSHOW';
         }
 
+        if ($myconfig->getConfigParam("mxAdminDashboard_yearDevelop") == '1') {
+            $this->_aViewData['aYearDevelop'] = $this->getYearDevelopment();
+        } else {
+            $this->_aViewData['aYearDevelop'] = 'DONTSHOW';
+        }
 
         if (Registry::getConfig()->getRequestParameter("fnc") == 'changeOrderChartView') {
             return 'mxOrderChart.tpl';
@@ -196,17 +201,27 @@ class mxAdminDashboard extends mxAdminDashboard_parent{
 
                 $sSql = "SELECT COUNT(oxorderdate) as ordercount, EXTRACT(DAY FROM oxorderdate) AS horizontitem, DATE(oxorderdate) AS date FROM oxorder WHERE EXTRACT(YEAR_MONTH FROM oxorderdate) = $sYear$sMonth AND oxshopid = $iActShopId GROUP BY DATE(oxorderdate) ORDER BY oxorderdate;";
                 $aResult = $oDB->getAll($sSql);
+
                 $sSql = "SELECT MAX(count) as maxcount FROM (SELECT COUNT(oxorderdate) as count, DATE(oxorderdate) AS date FROM oxorder WHERE  EXTRACT(YEAR_MONTH FROM oxorderdate) = $sYear$sMonth AND oxshopid = $iActShopId GROUP BY DATE(oxorderdate)) as tmp;";
                 $aMaxResult = $oDB->getAll($sSql);
-                $aReturn['year'] = $sYear;
-                $aReturn['month'] = $sMonth;
-                $aReturn['timestamp'] = '01.'.$sMonth.'.'.$sYear;
-                $aReturn['horizont'] = $sDays;
-                $aReturn['maxCount'] = $aMaxResult[0]['maxcount'];
-                $aReturn['optionTitle'] = $sMonth;
-                $aReturn['result'] = $aResult;
 
-                return $aReturn;
+                $sSql = "
+                    SELECT ROUND(SUM(OXTOTALBRUTSUM),2) as brutsum, ROUND(SUM(OXTOTALNETSUM),2) as netsum
+                    FROM oxorder
+                    WHERE OXORDERDATE LIKE '".$sYear."-".$sMonth."%'
+                ";
+                $aIncome = $oDB->getAll($sSql);
+
+                $aReturn['year']        = $sYear;
+                $aReturn['month']       = $sMonth;
+                $aReturn['timestamp']   = '01.'.$sMonth.'.'.$sYear;
+                $aReturn['horizont']    = $sDays;
+                $aReturn['maxCount']    = $aMaxResult[0]['maxcount'];
+                $aReturn['optionTitle'] = $sMonth;
+                $aReturn['incomeBrut']  = $aIncome[0]['brutsum'];
+                $aReturn['incomeNet']   = $aIncome[0]['netsum'];
+                $aReturn['result']      = $aResult;
+                break;
             case 'y':
                 if ($sYear == null) {$sYear  = date('Y');}
                 $sSql = "SELECT MONTH(oxorderdate) as horizontitem, COUNT(oxorderdate) as ordercount FROM oxorder WHERE oxorderdate >= '$sYear-01-01' AND oxshopid = $iActShopId GROUP BY MONTH(oxorderdate);";
@@ -214,13 +229,22 @@ class mxAdminDashboard extends mxAdminDashboard_parent{
 
                 $sSql = "SELECT MAX(ordercount) as maxcount FROM (SELECT MONTH(oxorderdate) as month, COUNT(oxorderdate) as ordercount FROM oxorder WHERE oxorderdate >= '$sYear-01-01' AND oxshopid = $iActShopId GROUP BY MONTH(oxorderdate)) as tmp;";
                 $aMaxResult = $oDB->getAll($sSql);
-                $aReturn['year'] = $sYear;
-                $aReturn['month'] = $sMonth;
-                $aReturn['horizont'] = 13;
-                $aReturn['maxCount'] = $aMaxResult[0]['maxcount'];
+
+                $sSql = "
+                    SELECT ROUND(SUM(OXTOTALBRUTSUM),2) as brutsum, ROUND(SUM(OXTOTALNETSUM),2) as netsum
+                    FROM oxorder
+                    WHERE OXORDERDATE LIKE '".$sYear."-%'
+                ";
+                $aIncome = $oDB->getAll($sSql);
+
+                $aReturn['year']        = $sYear;
+                $aReturn['month']       = $sMonth;
+                $aReturn['horizont']    = 13;
+                $aReturn['maxCount']    = $aMaxResult[0]['maxcount'];
                 $aReturn['optionTitle'] = $sYear;
-                $aReturn['result'] = $aResult;
-                return $aReturn;
+                $aReturn['incomeBrut']  = $aIncome[0]['brutsum'];
+                $aReturn['incomeNet']   = $aIncome[0]['netsum'];
+                $aReturn['result']      = $aResult;
                 break;
             case 'cm':
                 $sDays = cal_days_in_month(CAL_GREGORIAN, $sMonth, $sYear);
@@ -230,28 +254,52 @@ class mxAdminDashboard extends mxAdminDashboard_parent{
 
                 $sSql = "SELECT MAX(count) as maxcount FROM (SELECT COUNT(oxorderdate) as count, DATE(oxorderdate) AS date FROM oxorder WHERE  EXTRACT(YEAR_MONTH FROM oxorderdate) = $sYear$sMonth GROUP BY DATE(oxorderdate)) as tmp;";
                 $aMaxResult = $oDB->getAll($sSql);
-                $aReturn['year'] = $sYear;
-                $aReturn['month'] = $sMonth;
-                $aReturn['timestamp'] = '01.'.$sMonth.'.'.$sYear;
-                $aReturn['horizont'] = $sDays;
-                $aReturn['maxCount'] = $aMaxResult[0]['maxcount'];
+
+                $sSql = "
+                    SELECT ROUND(SUM(OXTOTALBRUTSUM),2) as brutsum, ROUND(SUM(OXTOTALNETSUM),2) as netsum
+                    FROM oxorder
+                    WHERE OXORDERDATE LIKE '".$sYear."-".$sMonth."%'
+                ";
+                $aIncome = $oDB->getAll($sSql);
+
+                $aReturn['year']        = $sYear;
+                $aReturn['month']       = $sMonth;
+                $aReturn['timestamp']   = '01.'.$sMonth.'.'.$sYear;
+                $aReturn['horizont']    = $sDays;
+                $aReturn['maxCount']    = $aMaxResult[0]['maxcount'];
                 $aReturn['optionTitle'] = $sMonth;
-                $aReturn['result'] = $aResult;
-                return $aReturn;
+                $aReturn['incomeBrut']  = $aIncome[0]['brutsum'];
+                $aReturn['incomeNet']   = $aIncome[0]['netsum'];
+                $aReturn['result']      = $aResult;
+                break;
             case 'cy':
                 $sYearTo = intval($sYear)+1;
                 $sSql = "SELECT MONTH(oxorderdate) as horizontitem, COUNT(oxorderdate) as ordercount FROM oxorder WHERE oxorderdate >= '$sYear-01-01' AND oxorderdate <= '$sYearTo-01-01' AND oxshopid = $iActShopId GROUP BY MONTH(oxorderdate);";
                 $aResult = $oDB->getAll($sSql);
+
                 $sSql = "SELECT MAX(ordercount) as maxcount FROM (SELECT MONTH(oxorderdate) as month, COUNT(oxorderdate) as ordercount FROM oxorder WHERE oxorderdate >= '$sYear-01-01' AND oxorderdate <= '$sYearTo-01-01' AND oxshopid = $iActShopId GROUP BY MONTH(oxorderdate)) as tmp;";
                 $aMaxResult = $oDB->getAll($sSql);
-                $aReturn['year'] = $sYear;
-                $aReturn['horizont'] = 13;
-                $aReturn['maxCount'] = $aMaxResult[0]['maxcount'];
+
+                $sSql = "
+                    SELECT ROUND(SUM(OXTOTALBRUTSUM),2) as brutsum, ROUND(SUM(OXTOTALNETSUM),2) as netsum
+                    FROM oxorder
+                    WHERE OXORDERDATE LIKE '".$sYear."-%'
+                ";
+                $aIncome = $oDB->getAll($sSql);
+
+                $aReturn['year']        = $sYear;
+                $aReturn['horizont']    = 13;
+                $aReturn['maxCount']    = $aMaxResult[0]['maxcount'];
                 $aReturn['optionTitle'] = $sYear;
-                $aReturn['result'] = $aResult;
-                return $aReturn;
+                $aReturn['incomeBrut']  = $aIncome[0]['brutsum'];
+                $aReturn['incomeNet']   = $aIncome[0]['netsum'];
+                $aReturn['result']      = $aResult;
                 break;
         }
+
+        if ($aReturn['incomeBrut'] == '') {$aReturn['incomeBrut'] = 0;}
+        if ($aReturn['incomeNet'] == '') {$aReturn['incomeNet'] = 0;}
+        return $aReturn;
     }
 
     /*
@@ -318,6 +366,9 @@ class mxAdminDashboard extends mxAdminDashboard_parent{
         $this->_aViewData['optionTitle']    = $aResult['optionTitle'];
         $this->_aViewData['year']           = $sActYear;
         $this->_aViewData['result']         = $aResult['result'];
+        $this->_aViewData['result']         = $aResult['result'];
+        $this->_aViewData['incomeBrut']     = $aResult['incomeBrut'];
+        $this->_aViewData['incomeNet']      = $aResult['incomeNet'];
     }
 
     /*
@@ -560,13 +611,13 @@ class mxAdminDashboard extends mxAdminDashboard_parent{
     public function getBestBuyers() {
         $oDB = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
         $sSQL = "
-            SELECT COUNT(oo.oxuserid) as counter,oxuser.oxcustnr,oxuser.oxlname,oxuser.oxfname,oxuser.oxusername, sum(oxtotalbrutsum) as brutsum, sum(oxtotalnetsum) as netsum
+            SELECT COUNT(oo.oxuserid) as counter,oxuser.oxcustnr,oxuser.oxlname,oxuser.oxfname,oxuser.oxusername, round(sum(oxtotalbrutsum),2) as brutsum, round(sum(oxtotalnetsum),2) as netsum
             FROM oxorder oo
             LEFT JOIN oxuser
                 ON oxuser.oxid = oo.oxuserid
             GROUP BY oo.oxuserid
             ORDER BY counter DESC
-            LIMIT 2
+            LIMIT 10
         ";
         $aResult = $oDB->getAll($sSQL);
         return $aResult;
@@ -619,7 +670,7 @@ class mxAdminDashboard extends mxAdminDashboard_parent{
             SELECT DAYNAME(oxorderdate) as day, COUNT(oxorderdate) as orderscount
             FROM oxorder
             GROUP BY day
-            ORDER BY WEEKDAY(oxorderdate)
+            ORDER BY orderscount DESC
         ";
         $aResult = $oDB->getAll($sSQL);
         return $aResult;
@@ -636,7 +687,7 @@ class mxAdminDashboard extends mxAdminDashboard_parent{
             SELECT MONTHNAME(oxorderdate) as day, COUNT(oxorderdate) as orderscount
             FROM oxorder
             GROUP BY day
-            ORDER BY MONTHNAME(oxorderdate)
+            ORDER BY orderscount DESC
         ";
         $aResult = $oDB->getAll($sSQL);
         return $aResult;
@@ -650,11 +701,26 @@ class mxAdminDashboard extends mxAdminDashboard_parent{
     public function getBestSellingHour() {
         $oDB = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
         $sSQL = "
-            SELECT HOUR(oxorderdate) as hour, COUNT(oxorderdate) as countorders
+            SELECT HOUR(oxorderdate) as hour,COUNT(*) AS countorders
             FROM oxorder
-            GROUP BY hour
-            ORDER BY HOUR(oxorderdate)
+            GROUP BY Hour(oxorderdate)
+            ORDER BY countorders DESC
             LIMIT 5
+        ";
+        $aResult = $oDB->getAll($sSQL);
+        return $aResult;
+    }
+
+    public function getYearDevelopment() {
+        $oDB = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
+        $sSQL = "
+            SELECT
+                ROUND(SUM(OXTOTALBRUTSUM),2) as brutsum,
+                ROUND(SUM(OXTOTALNETSUM),2) as netsum,
+                YEAR(oxorderdate) as yeardate
+            FROM oxorder
+            GROUP BY YEAR(oxorderdate)
+            ORDER BY YEAR(oxorderdate) ASC
         ";
         $aResult = $oDB->getAll($sSQL);
         return $aResult;

@@ -53,6 +53,12 @@
         z-index: 99;
     }
 
+    .vcenter {
+        display: inline-block;
+        vertical-align: middle;
+        float: none;
+    }
+
 </style>
 
 <div id="mwToggleSidebar"">><</div>
@@ -90,7 +96,6 @@
             *}]
     </div>
 </nav>
-
 [{* HEADER ENDS *}]
 
 [{* CONTENT BEGINS *}]
@@ -141,18 +146,25 @@
                         <input type="hidden" name="cl" value="mxAdminDashboard">
                         <input type="hidden" name="fnc" value="changeOrderChartView">
                         <input type="hidden" id="orderChartOption" name="option" value="m">
-                        <div class="btn-group" id="orderoverviewType">
-                            <button type="submit" data-option="m" class="btn btn-default active">[{oxmultilang ident="MXDASHBOARDORDERDATA_MONTH"}]</button>
-                            <button type="submit" data-option="y" class="btn btn-default">[{oxmultilang ident="MXDASHBOARDORDERDATA_YEAR"}]</button>
-                            [{*<button type="submit" data-option="p" class="btn btn-default">[{oxmultilang ident="MXDASHBOARDORDERDATA_PERIOD"}]</button>*}]
-                        </div>
-                        <div class="btn-group" id="orderoverviewNavigation">
-                            <button data-option="prev" class="btn btn-default"><</button>
-                            <button data-option="next" class="btn btn-default">></button>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="btn-group" id="orderoverviewType">
+                                    <button type="submit" data-option="m" class="btn btn-default active">[{oxmultilang ident="MXDASHBOARDORDERDATA_MONTH"}]</button>
+                                    <button type="submit" data-option="y" class="btn btn-default">[{oxmultilang ident="MXDASHBOARDORDERDATA_YEAR"}]</button>
+                                    [{*<button type="submit" data-option="p" class="btn btn-default">[{oxmultilang ident="MXDASHBOARDORDERDATA_PERIOD"}]</button>*}]
+                                </div>
+                                <div class="btn-group" id="orderoverviewNavigation">
+                                    <button data-option="prev" class="btn btn-default"><</button>
+                                    <button data-option="next" class="btn btn-default">></button>
+                                </div>
+                                <h4 id="orderChartPeriod">[{$orderCharts.timestamp|date_format:"%B"}]</h4>
+                            </div>
+                            <div class="col-sm-6 text-right">
+                                <h2 id="orderChartINCOME">[{oxmultilang ident="MXBESTBUYER_BRUT"}]: <span id="incomeBrut">[{$orderCharts.incomeBrut}]</span> € - [{oxmultilang ident="MXBESTBUYER_NET"}]: <span id="incomeNet">[{$orderCharts.incomeNet}]</span> €</h2>
+                            </div>
                         </div>
                     </form>
-
-                    <h4 id="orderChartPeriod">[{$orderCharts.timestamp|date_format:"%B"}]</h4>
 
                     <div id="orderoverview" style="height: 300px;"></div>
                     <div id="orderoverviweData">
@@ -200,7 +212,7 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">[{oxmultilang ident="MXBESTSELLINGMONTH"}]</h3>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body table-responsive">
                     <table class="table">
                         <tr>
                             [{foreach from=$aBestSellingMonth item=day}]
@@ -287,6 +299,34 @@
         </div>
         [{/if}]
     </div>
+
+    [{if $aYearDevelop != 'DONTSHOW'}]
+    <div class="row" id="yearChart">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">[{oxmultilang ident="MXYEARDEVELOPMENT"}]</h3>
+                </div>
+                <div class="panel-body">
+
+                    <div id="yearDevelopment" style="height: 300px;"></div>
+                    <div id="yearDevelopmentData">
+                        [{assign var="maxYearValue" value=0}]
+
+                        [{foreach from=$aYearDevelop item=yearData}]
+                            [{if $maxYearValue < $yearData.brutsum}]
+                                [{assign var="maxYearValue" value=$yearData.brutsum}]
+                            [{/if}]
+                            <input type="hidden" class="yearDevelopment" data-year="[{$yearData.yeardate}]" value="[{$yearData.brutsum}]" />
+                        [{/foreach}]
+                        <input type="hidden" id="yearMaxVal" value="[{$maxYearValue}]" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    [{/if}]
 
     <!-- THIRD row -->
     <div class="row">
@@ -586,7 +626,7 @@
                                 <td>[{$buyerUser.counter}]</td>
                                 <td>
                                     [{$buyerUser.oxcustnr}] - [{$buyerUser.oxusername}]<br>
-                                    [{$buyerUser.oxfname}] [{$buyerUser.oxusername}]
+                                    [{$buyerUser.oxfname}] [{$buyerUser.oxlname}]
                                 </td>
                                 <td>[{$buyerUser.netsum}]</td>
                                 <td>[{$buyerUser.brutsum}]</td>
@@ -667,8 +707,10 @@
         <div class="col-sm-12 col-md-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <img src="[{$oViewConf->getBaseDir()}]/modules/mx/admindashboard/maexware.png" hspace="20" vspace="10">
-                    [{oxmultilang ident="MXINFO_DASHBOARD"}]
+                    <div class="row">
+                        <div class="col-md-3"><img src="[{$oViewConf->getBaseDir()}]/modules/mx/admindashboard/maexware.png" hspace="20" vspace="10"></div>
+                        <div class="col-md-9 vcenter">[{oxmultilang ident="MXINFO_DASHBOARD"}]</div>
+                    </div>
                 </div>
             </div>
         </div>
