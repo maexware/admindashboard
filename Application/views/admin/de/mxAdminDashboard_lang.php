@@ -57,6 +57,8 @@ $aLang = array(
     'MXBESTSELLINGHOUR'                 => 'Verkaufsstarke Stunden',
     'MXBESTSELLINGHOUR_LABEL'           => 'Uhr',
     'MXYEARDEVELOPMENT'                 => 'Jahresentwicklung Einnahmen Brutto',
+    'MXYEARDEVELOPMENTORDER'            => 'Jahresentwicklung Bestellungen',
+    'MXGENDERORDERS'                    => 'Bestellungen nach Geschlecht',
 
     'MXINFO_DASHBOARD'                  => 'Das OXID Admin Panel wird von maexware mit freundlichen Grüßen bereitgestellt. Bei Fragen, Featurewünschen und anderen Themen rund um OXID können Sie uns gerne kontaktieren.',
 
@@ -81,6 +83,8 @@ $aLang = array(
     'SHOP_MODULE_mxAdminDashboard_bestSellingMonth'     => 'Verkaufsstarke Monate',
     'SHOP_MODULE_mxAdminDashboard_bestSellingHour'      => 'Verkaufsstarke Stunden',
     'SHOP_MODULE_mxAdminDashboard_yearDevelop'          => 'Jahresentwicklung',
+    'SHOP_MODULE_mxAdminDashboard_yearDevelopOrder'     => 'Jahresentwicklung Bestellungen',
+    'SHOP_MODULE_mxAdminDashboard_genderOrders'         => 'Verteilung Bestellungen nach Geschlecht',
 );
 
 

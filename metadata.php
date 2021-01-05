@@ -172,5 +172,17 @@ $aModule = [
             'type'  => 'bool',
             'value' => '1'
         ],
+        [
+            'group' => 'mxAdminDashboard',
+            'name'  => 'mxAdminDashboard_yearDevelopOrder',
+            'type'  => 'bool',
+            'value' => '1'
+        ],
+        [
+            'group' => 'mxAdminDashboard',
+            'name'  => 'mxAdminDashboard_genderOrders',
+            'type'  => 'bool',
+            'value' => '1'
+        ],
     ],
 ];

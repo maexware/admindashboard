@@ -255,10 +255,7 @@
 
         </div>
         [{/if}]
-    </div>
 
-    <!-- Second row -->
-    <div class="row">
         [{if $orderPayments != 'DONTSHOW'}]
         <div class="col-sm-12 col-md-6">
             <div class="panel panel-default">
@@ -300,33 +297,75 @@
         [{/if}]
     </div>
 
-    [{if $aYearDevelop != 'DONTSHOW'}]
-    <div class="row" id="yearChart">
-        <div class="col-sm-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">[{oxmultilang ident="MXYEARDEVELOPMENT"}]</h3>
-                </div>
-                <div class="panel-body">
+    <div class="row">
+        [{if $aYearDevelop != 'DONTSHOW'}]
+            <div class="col-sm-4" id="yearChart">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">[{oxmultilang ident="MXYEARDEVELOPMENT"}]</h3>
+                    </div>
+                    <div class="panel-body">
 
-                    <div id="yearDevelopment" style="height: 300px;"></div>
-                    <div id="yearDevelopmentData">
-                        [{assign var="maxYearValue" value=0}]
+                        <div id="yearDevelopment" style="height: 300px;"></div>
+                        <div id="yearDevelopmentData">
+                            [{assign var="maxYearValue" value=0}]
 
-                        [{foreach from=$aYearDevelop item=yearData}]
-                            [{if $maxYearValue < $yearData.brutsum}]
-                                [{assign var="maxYearValue" value=$yearData.brutsum}]
-                            [{/if}]
-                            <input type="hidden" class="yearDevelopment" data-year="[{$yearData.yeardate}]" value="[{$yearData.brutsum}]" />
-                        [{/foreach}]
-                        <input type="hidden" id="yearMaxVal" value="[{$maxYearValue}]" />
+                            [{foreach from=$aYearDevelop item=yearData}]
+                                [{if $maxYearValue < $yearData.brutsum}]
+                                    [{assign var="maxYearValue" value=$yearData.brutsum}]
+                                [{/if}]
+                                <input type="hidden" class="yearDevelopment" data-year="[{$yearData.yeardate}]" value="[{$yearData.brutsum}]" />
+                            [{/foreach}]
+                            <input type="hidden" id="yearMaxVal" value="[{$maxYearValue}]" />
+                        </div>
                     </div>
                 </div>
             </div>
+        [{/if}]
 
+        [{if $aYearDevelopOrder != 'DONTSHOW'}]
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">[{oxmultilang ident="MXYEARDEVELOPMENTORDER"}]</h3>
+                </div>
+                <div class="panel-body">
+
+                    <div id="yearOrderDevelopment" style="height: 300px;"></div>
+                    <div id="yearOrderDevelopmentData">
+                        [{assign var="maxYearOrderValue" value=0}]
+
+                        [{foreach from=$aYearDevelopOrder item=yearData}]
+                            [{if $maxYearOrderValue < $yearData.counter}]
+                                [{assign var="maxYearOrderValue" value=$yearData.counter}]
+                            [{/if}]
+                            <input type="hidden" class="yearOrderDevelopment" data-year="[{$yearData.yeardate}]" value="[{$yearData.counter}]" />
+                        [{/foreach}]
+                        <input type="hidden" id="yearOrderMaxVal" value="[{$maxYearOrderValue}]" />
+                    </div>
+                </div>
+            </div>
         </div>
+        [{/if}]
+
+        [{if $aGenderOrders != 'DONTSHOW'}]
+            <div class="col-sm-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">[{oxmultilang ident="MXGENDERORDERS"}]</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="genderOrderChartQuality" style="height: 300px;"></div>
+                        <div id="genderOrderChartQualityData">
+                            <input type="hidden" class="qualityGenderOrder" id="aGenderMen" value="[{$aGenderOrders.MR}]" />
+                            <input type="hidden" class="qualityGenderOrder" id="aGenderWomen" value="[{$aGenderOrders.MRS}]" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        [{/if}]
     </div>
-    [{/if}]
+
 
     <!-- THIRD row -->
     <div class="row">

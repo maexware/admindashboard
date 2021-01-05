@@ -169,6 +169,20 @@ class mxAdminDashboard extends mxAdminDashboard_parent{
             $this->_aViewData['aYearDevelop'] = 'DONTSHOW';
         }
 
+        if ($myconfig->getConfigParam("mxAdminDashboard_yearDevelopOrder") == '1') {
+            $this->_aViewData['aYearDevelopOrder'] = $this->getYearDevelopmentOrders();
+        } else {
+            $this->_aViewData['aYearDevelopOrder'] = 'DONTSHOW';
+        }
+
+        if ($myconfig->getConfigParam("mxAdminDashboard_genderOrders") == '1') {
+            $this->_aViewData['aGenderOrders'] = $this->getGenderOrders();
+        } else {
+            $this->_aViewData['aGenderORders'] = 'DONTSHOW';
+        }
+
+
+
         if (Registry::getConfig()->getRequestParameter("fnc") == 'changeOrderChartView') {
             return 'mxOrderChart.tpl';
         }
@@ -724,6 +738,38 @@ class mxAdminDashboard extends mxAdminDashboard_parent{
         ";
         $aResult = $oDB->getAll($sSQL);
         return $aResult;
+    }
+
+    public function getYearDevelopmentOrders() {
+        $oDB = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
+        $sSQL = "
+            SELECT
+                COUNT(*) as counter,
+                YEAR(oxorderdate) as yeardate
+            FROM oxorder
+            GROUP BY YEAR(oxorderdate)
+            ORDER BY YEAR(oxorderdate) ASC
+        ";
+        $aResult = $oDB->getAll($sSQL);
+        return $aResult;
+    }
+
+    public function getGenderOrders() {
+        $oDB = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
+        $sSQL = "
+            SELECT COUNT(*) as ordercount, oxuser.oxsal
+            FROM oxorder
+            LEFT JOIN oxuser
+            ON oxuser.oxid = oxorder.oxuserid
+            GROUP BY oxuser.oxsal
+        ";
+        $aResult = $oDB->getAll($sSQL);
+
+        $aGenderDatas = array();
+        foreach ($aResult as $item) {
+            $aGenderDatas[$item['oxsal']] = $item['ordercount'];
+        }
+        return $aGenderDatas;
     }
 
     /*
