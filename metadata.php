@@ -37,7 +37,7 @@ $aModule = [
         'de' => 'Anzeige von Shopstatistiken anstatt der standard OXID eShop Admin Startseite',
     ],
     'thumbnail'   => 'maexware.png',
-    'version'     => '1.5',
+    'version'     => '1.6',
     'author'      => 'maexware solutions GmbH',
     'url'         => 'https://www.maexware-solutions.de',
     'email'       => 'info@maexware-solutions.de',
